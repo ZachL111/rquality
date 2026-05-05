@@ -1,0 +1,6 @@
+Package: Rquality
+Type: Package
+Title: Rquality
+Version: 0.1.0
+License: MIT
+Description: Run table checks for nulls, ranges, uniqueness, and cross-field rules.
