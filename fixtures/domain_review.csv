@@ -1,0 +1,6 @@
+name,focus,signal,slack,drag,confidence,score,lane
+baseline,schema drift,70,22,16,67,181,ship
+stress,quality gap,62,46,28,88,174,ship
+edge,manifest risk,79,30,18,55,189,ship
+recovery,record pressure,63,29,22,60,149,ship
+stale,schema drift,53,40,25,73,144,ship

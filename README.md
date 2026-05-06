@@ -1,30 +1,29 @@
 # rquality
 
-`rquality` is a R project for Data quality. It turns run table checks for nulls, ranges, uniqueness, and cross-field rules into a small local model with readable fixtures and a direct verification command.
+`rquality` is a R project in data quality. Its focus is to run table checks for nulls, ranges, uniqueness, and cross-field rules.
 
-## Reading Rquality
+## Project Rationale
 
-Start with the README, then open `metadata/project.json` to check the constants behind the examples. After that, `fixtures/cases.csv` shows the compact path and `examples/extended_cases.csv` gives a wider look at the same rule.
+I want this repository to be useful as a quick reading exercise: fixtures first, implementation second, verifier last.
 
-## Purpose
+## Rquality Review Notes
 
-I use this kind of project to make a rule visible before adding more machinery around it. The important part here is not the size of the codebase. It is that the input signals, scoring rule, fixture data, and expected output can all be checked in one sitting.
+For a quick review, compare `manifest risk` with `schema drift` before reading the middle cases.
 
-## Fixture Notes
+## Feature Set
 
-`degraded` is the first example I would inspect because it lands on the `review` path with a score of -10. The broader file also keeps `degraded` at -10 and `surge` at 227, which gives the model a useful low-to-high spread.
+- `fixtures/domain_review.csv` adds cases for schema drift and quality gap.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/rquality-walkthrough.md` walks through the case spread.
+- The R code includes a review path for `manifest risk` and `schema drift`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Design Sketch
+## Architecture
 
-The core is a scoring model over demand, capacity, latency, risk, and weight. That keeps schema checks, quality rules, and manifest output in one explicit decision path. The threshold is 158, with risk penalty 5, latency penalty 2, and weight bonus 3. The R version keeps the model as simple functions over named lists for easy analysis use.
+The implementation keeps the scoring rule plain: reward signal and confidence, preserve slack, penalize drag, then classify the result into a review lane.
 
-## What It Does
-
-- Models schema checks with deterministic scoring and explicit review decisions.
-- Uses fixture data to keep quality rules changes visible in code review.
-- Includes extended examples for manifest output, including `surge` and `degraded`.
-- Documents review gates tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
+The R addition stays small enough to inspect in one sitting.
 
 ## Usage
 
@@ -32,36 +31,10 @@ The core is a scoring model over demand, capacity, latency, risk, and weight. Th
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Test Command
 
-## Verification
+The verifier is intentionally local. It should fail if the fixture score math, lane assignment, or language-specific test drifts.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Next Improvements
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Files Worth Reading
-
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-
-## Next Directions
-
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add one more data quality fixture that focuses on a malformed or borderline input.
-
-## Limits
-
-This code is local-first. It makes no claim about deployed usage and avoids credentials, hosted state, and environment-specific setup.
-
-## Setup
-
-Install R and run the commands from the repository root. The project does not need credentials or a hosted service.
+This remains a local project with deterministic fixtures. It does not depend on credentials, hosted services, or live data. Future work should add richer malformed inputs before widening the public API.

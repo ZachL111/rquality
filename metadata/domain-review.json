@@ -1,0 +1,73 @@
+{
+  "repo": "rquality",
+  "language": "R",
+  "category": "Data quality",
+  "goal": "Run table checks for nulls, ranges, uniqueness, and cross-field rules.",
+  "review_model": {
+    "terms": [
+      "schema drift",
+      "quality gap",
+      "manifest risk",
+      "record pressure"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "schema drift",
+      "signal": 70,
+      "slack": 22,
+      "drag": 16,
+      "confidence": 67,
+      "score": 181,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "quality gap",
+      "signal": 62,
+      "slack": 46,
+      "drag": 28,
+      "confidence": 88,
+      "score": 174,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "manifest risk",
+      "signal": 79,
+      "slack": 30,
+      "drag": 18,
+      "confidence": 55,
+      "score": 189,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "record pressure",
+      "signal": 63,
+      "slack": 29,
+      "drag": 22,
+      "confidence": 60,
+      "score": 149,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "schema drift",
+      "signal": 53,
+      "slack": 40,
+      "drag": 25,
+      "confidence": 73,
+      "score": 144,
+      "lane": "ship"
+    }
+  ]
+}
