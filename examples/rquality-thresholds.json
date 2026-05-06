@@ -1,0 +1,17 @@
+{
+  "repo": "rquality",
+  "thresholds": {
+    "signal": 4,
+    "slack": 1,
+    "confidence": 1,
+    "drag": 3,
+    "ship": 185,
+    "watch": 111
+  },
+  "terms": [
+    "schema drift",
+    "quality gap",
+    "manifest risk",
+    "record pressure"
+  ]
+}
